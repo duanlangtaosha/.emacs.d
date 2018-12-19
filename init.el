@@ -7,58 +7,18 @@
 ;;(package-initialize)
 ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/monokai-emacs/")
 ;;******************************************************************************
-   
-     (when (>= emacs-major-version 24)
-     (require 'package)
-     (package-initialize)
-     (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-		      ("melpa" . "http://elpa.emacs-china.org/melpa/"))))
 
-;; 注意 elpa.emacs-china.org 是 Emacs China 中文社区在国内搭建的一个 ELPA 镜像
+(add-to-list 'load-path "~/.emacs.d/lisp")
+(require 'init-packages)
 
- ;; cl - Common Lisp Extension
- (require 'cl)
 
- ;; Add Packages
- (defvar my/packages '(
-		;; --- Auto-completion ---
-		company
-		;; --- Better Editor ---
-		hungry-delete
-		swiper
-		counsel
-		smartparens
-		;; --- Major Mode ---
-		js2-mode
-		;; --- Minor Mode ---
-		nodejs-repl
-		exec-path-from-shell
-		;; --- Themes ---
-		monokai-theme
-		popwin
-		;; solarized-theme
-		) "Default packages")
-
- (setq package-selected-packages my/packages)
-
- (defun my/packages-installed-p ()
-     (loop for pkg in my/packages
-	   when (not (package-installed-p pkg)) do (return nil)
-	   finally (return t)))
-
- (unless (my/packages-installed-p)
-     (message "%s" "Refreshing package database...")
-     (package-refresh-contents)
-     (dolist (pkg my/packages)
-       (when (not (package-installed-p pkg))
-	 (package-install pkg))))
+(setq ring-bell-function 'ignore)
 
  ;; Find Executable Path on OS X
  (when (memq window-system '(mac ns))
    (exec-path-from-shell-initialize))
 
-;只有安装了相应的company包后才能使用
-(global-company-mode t)
+
 
 ;设置行号，如果不加global可能不能显示行号
 (global-linum-mode t)
@@ -129,10 +89,6 @@
 ;设置光标为线条状
 (setq-default cursor-type `bar)
 
-;;打开新窗口后光标切到新窗口popwin
-(require 'popwin)
-(popwin-mode t)
-
 ;;击活abbrev-mode后可以添加缩写,如按8dl后按空格则会自动补全成duanlangtaosha
 ;;8dl按/ 会变成duanlangtaosha/
 (abbrev-mode t)
@@ -160,7 +116,7 @@
 (global-set-key "\C-x\ \C-r" `recentf-open-files)
 ;*************************************************************
 
-(load-theme 'monokai t)
+
 
 ;自动设置的，新宋体，字号
 (custom-set-variables
