@@ -56,6 +56,17 @@
 (require 'popwin)
 (popwin-mode t)
 
+;添加多个空格一下就删除了
+(global-hungry-delete-mode)
+
+;;当前行高亮
+(global-hl-line-mode t)
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq enable-recursive-minibuffers t)
+;C-h m可以查看当前buffer的Minor mode
+;nil和-1有什么区别
+
 
 ;; 一般特性名和文件名一样
 (provide 'init-packages)

@@ -9,93 +9,6 @@
 ;;******************************************************************************
 
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(require 'init-packages)
-
-
-(setq ring-bell-function 'ignore)
-
- ;; Find Executable Path on OS X
- (when (memq window-system '(mac ns))
-   (exec-path-from-shell-initialize))
-
-
-
-;设置行号，如果不加global可能不能显示行号
-(global-linum-mode t)
-;(linum-mode t)
-
-;关闭开启软件启动界面
-(setq inhibit-splash-screen t)
-
-;关闭左边的托动条
-(scroll-bar-mode -1)
-
-;注释缩进关闭
-(electric-indent-mode -1)
-
-;输入括号时自动添加半边括号
-(electric-pair-mode t)
-
-;选中后输入就将选中的以输入的替换了
-(delete-selection-mode t)
-
-;开启emacs后全屏显示
-(setq initial-frame-alist (quote ((fullscreen . maximized))))
-
-;当在外部修改了init.el会自动加载init.el文件
-(global-auto-revert-mode t)
-
-;添加多个空格一下就删除了
-;(global-hungry-delete-mode)
-
-;(popwin-mode t )会自动将光标移动到新打开的窗口，按q或者C-g会自动关掉，还没有下载package
-
-;与在Options-Highlighting Matching Paren 一样的效果
-;add-hook添加一个勾子，添加到emacs-lisp-mode-hook上
-;这句话的意思是：当打开文件后会击活emacs-lisp-mode的major mode
-;击活后会运行其所有的勾子，则加的show-paren-mode的勾子就会生效
-(add-hook `emacs-lisp-mode-hook `show-paren-mode)
-
-;;当前行高亮
-(global-hl-line-mode t)
-
-(global-set-key (kbd "C-h C-f") 'find-function)
-(global-set-key (kbd "C-h C-v") 'find-variable)
-(global-set-key (kbd "C-h C-k") 'find-function-on-key)
-
-
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq enable-recursive-minibuffers t)
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "<f6>") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "<f1> f") 'counsel-describe-function)
-(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-(global-set-key (kbd "<f1> l") 'counsel-find-library)
-
-
-;可以在File中 Open Recent中看到最近打开的文件
-;(recentf-mode t)
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 10)
-
-;不备份文件
-(setq make-backup-files nil)
-
-;设置光标为线条状
-(setq-default cursor-type `bar)
-
-;;击活abbrev-mode后可以添加缩写,如按8dl后按空格则会自动补全成duanlangtaosha
-;;8dl按/ 会变成duanlangtaosha/
-(abbrev-mode t)
-(define-abbrev-table 'global-abbrev-table '(
-					    ("8dl" "duanlangtaosha")))
-
-
 
 ;*************************************************************
 ;设置快捷键打开init.el文件，当按下F2后就会自动打开此文件
@@ -104,42 +17,15 @@
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 
-;将函数的快捷键绑定到F2
-(global-set-key (kbd "<f2>") `open-my-init-file)
-;*************************************************************
+(require 'init-packages)
+(require 'init-ui)
+(require 'init-better-default)
+(require 'init-keybindings)
 
-;*************************************************************
-;设置快捷键调用C-x C-r就可以显示最近打开的文件
-(require `recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" `recentf-open-files)
-;*************************************************************
+;; 将软件自动生成的配置放到lisp/custom.el文件中
+(setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
 
-
-
-;自动设置的，新宋体，字号
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-idle-delay 0.08)
- '(company-minimum-prefix-length 1)
- '(package-selected-packages (quote (company))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "新宋体" :foundry "outline" :slant normal :weight normal :height 158 :width normal)))))
-
-
-
-;C-h m可以查看当前buffer的Minor mode
-;nil和-1有什么区别
-
-
+(load-file custom-file)
 ;; ************************************************************************************************************
 ;;  ;;;###autoload  魔法注释
 ;; 当调用package-initialize 后会加载如companypackage中，的company-autoloads.el文件，这个文件是自动生成的一个文件
