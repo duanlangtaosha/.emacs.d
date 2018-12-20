@@ -26,6 +26,7 @@
 		;; --- Themes ---
 		monokai-theme
 		popwin
+		ecb
                 ;;helm-cscope
 		;;xcscope
         ecb
